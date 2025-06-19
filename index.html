@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Orçamento de Mudança - David Couto</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <header>
+    <img src="img/logo.png" alt="Logo" class="logo" />
+    <h1>David Couto Mudanças</h1>
+    <p>Orçamento online com cálculo de distância e valor</p>
+  </header>
+
+  <main>
+    <form id="mudancaForm">
+      <label>Nome do Cliente:
+        <input type="text" id="nomeCliente" required />
+      </label>
+
+      <label>Data da Mudança:
+        <input type="date" id="dataMudanca" required />
+      </label>
+
+      <label>Bairro de Origem:
+        <input type="text" id="bairroOrigem" required onblur="geocodificarNominatim(this.value, 'origem')" />
+        <div id="origem-sugestoes"></div>
+        <input type="hidden" id="origemLat" />
+        <input type="hidden" id="origemLon" />
+      </label>
+
+      <label>Bairro de Destino:
+        <input type="text" id="bairroDestino" required onblur="geocodificarNominatim(this.value, 'destino')" />
+        <div id="destino-sugestoes"></div>
+        <input type="hidden" id="destinoLat" />
+        <input type="hidden" id="destinoLon" />
+      </label>
+
+      <label>Valor base (R$):
+        <input type="number" id="orcamento" value="150" min="0" step="0.01" />
+      </label>
+
+      <fieldset>
+        <legend>Itens da Mudança:</legend>
+        <label><input type="checkbox" name="item" value="Sofá" data-volume="2.5" /> Sofá</label>
+        <label><input type="checkbox" name="item" value="Geladeira" data-volume="1.8" /> Geladeira</label>
+        <label><input type="checkbox" name="item" value="Fogão" data-volume="1.2" /> Fogão</label>
+        <label><input type="checkbox" name="item" value="Cama de Casal" data-volume="2.8" /> Cama de Casal</label>
+        <label><input type="checkbox" name="item" value="Guarda-Roupa" data-volume="3.0" /> Guarda-Roupa</label>
+      </fieldset>
+
+      <button type="button" onclick="calcularMudanca()">📦 Calcular Mudança</button>
+    </form>
+
+    <div id="distancia" class="info"></div>
+    <div id="resultado" class="info"></div>
+
+    <div class="acoes">
+      <button onclick="enviarWhatsAppEPrepararPDF()">📲 Enviar no WhatsApp</button>
+      <button id="btnSalvarPDF" onclick="salvarPDF()" style="display:none;">📄 Salvar em PDF</button>
+    </div>
+
+    <div id="mapa" style="height: 300px; margin-top: 20px;"></div>
+  </main>
+
+  <footer>
+    <p>© 2025 David Couto Mudanças</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
